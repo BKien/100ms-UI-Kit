@@ -14,10 +14,14 @@ from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 
 
-ASSET_SHA256 = "e40b213d289e80a89f8fecc516c426a007df1dc9e8491583b29ef89605206eb3"
+ASSET_SHA256 = "b5fdb5343dc4160e98c7eae4e65b98c3c1e4396129ecc82d51bc20a806f4b3f7"
 CONFIRMATION = "RESET_FINALSOURCE_TO_PROVIDED_BASELINE"
 ALLOWED_PREFIXES = ("baseline/be/src/", "baseline/fe/src/")
-DATABASE_INFRASTRUCTURE = ("database/migrations", "database/migration-data-source.ts", "config/database.config.ts")
+DATABASE_INFRASTRUCTURE = (
+    "data/database/migrations",
+    "data/database/migration-data-source.ts",
+    "data/database/database.config.ts",
+)
 
 
 def fail(message: str) -> None:

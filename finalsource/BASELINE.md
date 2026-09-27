@@ -1,34 +1,42 @@
-# Generated-source baseline
+# Empty three-layer source baseline
 
-This directory contains the pre-existing platform baseline shared by every experimental run. It is not first-pass feature output and must not be counted as code generated for a use case.
+`finalsource` is the researcher-designated clean starting point for every new
+pipeline, replicate, or model condition. It is runnable platform scaffolding,
+not use-case-generated source.
 
-## Frontend baseline
+## Layer contract
 
-- React/Vite/TypeScript/Tailwind bootstrap and strict compiler/lint configuration.
-- Root router, application shell, placeholder home and not-found pages.
-- Typed Axios client and common API response types.
-- Empty extension directories for feature components, context, hooks, assets and utilities.
+Both applications use three layers:
 
-## Backend baseline
+```text
+presentation -> business -> data
+```
 
-- NestJS bootstrap, `/api` prefix, DTO validation and constrained CORS.
-- Standard HTTP headers, normalized success/error responses and development-only Swagger.
-- Validated environment/configuration and TypeORM/MySQL wiring with `synchronize: false`.
-- A minimal health endpoint and empty `modules/` extension directory.
+- `presentation` owns HTTP/UI input and output.
+- `business` owns use cases, business models, and rules.
+- `data` owns persistence and remote I/O.
 
-## Extension contract
+Presentation must not access database or HTTP adapters directly. Data must not
+import presentation. Add an interface only when it hides meaningful behavior;
+empty layers remain explicit `.gitkeep` extension points rather than pass-through
+classes.
 
-For each approved UC, AI must extend this baseline rather than recreate it:
+## Baseline contents
 
-- FE: add feature pages/components/API services and register routes with the existing router/shell.
-- BE: add feature modules/controllers/services/entities/DTOs and import modules into `AppModule`.
-- Reuse the existing HTTP client, configuration, validation, filters and interceptors.
-- Do not replace package/config/bootstrap files unless an approved requirement makes a minimal change necessary.
-- Do not add dependencies when existing platform capabilities suffice.
-- Preserve unrelated feature code and all prior user changes.
+- Frontend: React/Vite/TypeScript/Tailwind bootstrap, a root router, placeholder
+  home/not-found pages, a generic HTTP client, and normalized response contracts.
+- Backend: NestJS bootstrap, `/api` prefix, validation, CORS, normalized response
+  handling, development Swagger, a health endpoint, and TypeORM/MySQL wiring.
+- Database: one no-op `EmptyBaseline` migration and no application tables. The
+  runtime retains TypeORM's migration metadata table only.
 
-Every model comparison must start from the same clean baseline revision. Record that revision/input-bundle hash in the audit. Only the UC-specific diff after the generation start timestamp is first-pass generated code.
+Feature pages, authentication, domain entities, repositories, and business use
+cases are intentionally absent. Approved use cases extend the three layers and
+register their modules through the existing composition roots.
 
-## Docker runtime baseline
+## Runtime boundary
 
-`compose.yaml` runs MySQL 8.4, the compiled NestJS application with `NODE_ENV=development`, and the compiled React application served by unprivileged Nginx. The research runtime intentionally rejects `NODE_ENV=production` so Swagger/OpenAPI remains available to the independent final-source evaluator. Frontend and backend publish configurable loopback ports for researcher inspection; MySQL remains internal. This runtime is not a production deployment target. Nginx proxies `/api` to the backend so the browser uses one public origin. AI may extend Docker configuration only when an approved feature requires infrastructure changes; it must not expose MySQL, embed secrets, enable TypeORM synchronization or replace the containers for ordinary UC implementation.
+`compose.yaml` uses the isolated project name `100ms-ui-kit`, runs MySQL 8.4,
+executes reviewed migrations once, and serves the compiled applications. MySQL
+is internal to the Compose network. Application schema synchronization and
+automatic migration execution remain disabled.

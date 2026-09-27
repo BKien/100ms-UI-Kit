@@ -19,6 +19,6 @@ Load only the references required by the active change areas:
 - Tailwind or Recharts: [references/tailwind-charts.md](references/tailwind-charts.md)
 
 - For Figma-backed work, require a checksum-valid frozen dataset and map every visible node/state. Use Figma only to create or refresh a missing dataset through the repository resolver.
-- Reuse the HTTP client, router, shell and established state patterns. Implement typed loading, empty, success, validation and error states. Apply accessible labels, keyboard/focus behavior and responsive Tailwind.
+- Preserve the three-layer dependency direction `presentation -> business -> data`. Reuse the data-layer HTTP client and presentation router. Implement typed loading, empty, success, validation and error states. Apply accessible labels, keyboard/focus behavior and responsive Tailwind.
 - Do not invent navigation, API calls or business behavior; stop for material business/API/schema/ownership ambiguity.
 - Run only permitted non-test lint/typecheck/build and visual/runtime observations.

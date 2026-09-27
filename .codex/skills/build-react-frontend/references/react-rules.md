@@ -2,10 +2,10 @@
 
 ## Architecture and naming
 
-- Keep source under `finalsource/fe/src` using `pages/`, `components/`, `api/`, `hooks/`, `context/`, `router/`, `utils/` and `assets/`.
+- Keep source under `finalsource/fe/src` and preserve the three layers: `presentation/` for pages, routes, UI and view state; `business/` for use cases and business models; `data/` for HTTP adapters and repositories.
 - Name React components/types with PascalCase, hooks with `use` + PascalCase, functions/variables with camelCase, constants with descriptive camelCase or project-established uppercase style.
 - Use one clear responsibility per component. Extract reusable presentation, not arbitrary one-line wrappers.
-- Keep HTTP calls out of components; components call typed functions in `src/api`.
+- Keep HTTP calls out of presentation modules; presentation calls business use cases, which use typed data-layer repositories or the shared HTTP client.
 
 ## Rules of React
 

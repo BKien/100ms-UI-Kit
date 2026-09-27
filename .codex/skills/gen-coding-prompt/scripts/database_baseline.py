@@ -19,7 +19,7 @@ PROTOCOL = "mysql84-tables-v1"
 HASH = re.compile(r"sha256:[0-9a-f]{64}\Z")
 FIELDS = {"migration_head", "dbml_sha256", "schema_fingerprint_sha256"}
 DBML_PATH = "docs/00-context/engineering/schema.dbml"
-MIGRATIONS_PATH = "finalsource/be/src/database/migrations"
+MIGRATIONS_PATH = "finalsource/be/src/data/database/migrations"
 MIGRATION_TABLE = "typeorm_migrations"
 
 # Explicit metadata allow-list excludes row counts, cardinality, timestamps,
@@ -103,8 +103,8 @@ def migration_catalog():
 
 def verify_execution_settings():
     # These literal settings form the research runtime contract. Do not evaluate TS.
-    for relative in ("finalsource/be/src/config/database.config.ts",
-                     "finalsource/be/src/database/migration-data-source.ts"):
+    for relative in ("finalsource/be/src/data/database/database.config.ts",
+                     "finalsource/be/src/data/database/migration-data-source.ts"):
         path = ROOT / relative
         require(path.is_file(), f"missing database settings: {relative}")
         source = re.sub(r"/\*.*?\*/|//[^\n]*", "", path.read_text(encoding="utf-8-sig"), flags=re.S)
@@ -112,7 +112,7 @@ def verify_execution_settings():
             values = re.findall(rf"\b{setting}\s*:\s*([^,\n}}]+)", source)
             require([value.strip() for value in values] == ["false"],
                     f"{relative} must set {setting}: false exactly once")
-    cli = (ROOT / "finalsource/be/src/database/migration-data-source.ts").read_text(encoding="utf-8-sig")
+    cli = (ROOT / "finalsource/be/src/data/database/migration-data-source.ts").read_text(encoding="utf-8-sig")
     require(re.search(r"migrationsTableName\s*:\s*['\"]typeorm_migrations['\"]", cli),
             "CLI migration table must be typeorm_migrations")
 

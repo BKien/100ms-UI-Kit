@@ -59,6 +59,16 @@ Prompt text alone cannot prove implementation. Evidence must point to inspectabl
 
 Authentication, ownership, validation and related controls required by a UC or BR remain ordinary implementation behavior rather than a separate research dimension.
 
+## Generated application architecture
+
+`finalsource/fe` and `finalsource/be` use the same three-layer dependency direction:
+
+```text
+presentation -> business -> data
+```
+
+Presentation owns UI or HTTP input/output, business owns use cases and rules, and data owns persistence or remote I/O. Root application modules are composition roots. Empty layers contain extension markers instead of placeholder services or repositories. The clean database baseline has no application tables; reviewed migrations and matching DBML are added during researcher setup before the first run that needs them.
+
 ## Command boundaries
 
 Each command authorizes its operation without further human gate confirmations. Canonical `gates` names are internal command bookkeeping, recorded through `record_command.py`; recorded receipts/evidence remain immutable. Database structure is researcher-managed through TypeORM migrations between runs and immutable within each run: read the pinned DBML, verify migration history and hashes, and allow authorized business DML only. Missing structure blocks the run; baseline changes require researcher setup and a new configuration/run. Application rebuilds within runs use `--no-deps backend frontend`, never the setup migration service. Material specification ambiguity or input incompatibility requires researcher resolution. Optional UI scoring never blocks audit, telemetry, export or completion.

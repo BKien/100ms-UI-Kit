@@ -1,0 +1,23 @@
+{
+  "artifact_type": "docker-environment-current",
+  "observed_at": "2026-09-27T13:25:10Z",
+  "repository_revision": "56051d6",
+  "docker": {
+    "cli": "29.2.1",
+    "compose": "5.0.2",
+    "daemon": "stopped after verification"
+  },
+  "configuration": {
+    "env_present": true,
+    "env_valid": false,
+    "compose_valid": true
+  },
+  "services": {
+    "project": "100ms-ui-kit",
+    "containers": 0,
+    "volumes": 0,
+    "images_built": ["backend", "frontend"]
+  },
+  "status": "BLOCKED",
+  "next_action": "Replace the placeholder MYSQL_PASSWORD in ignored finalsource/.env, start Docker Desktop, then initialize the isolated 100ms-ui-kit stack."
+}

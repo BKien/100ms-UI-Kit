@@ -70,13 +70,14 @@ The reported experiment flow result follows `accepted-audit-results-v1`: use the
 
 ## Database input
 
-The fifth input is the researcher-prepared MySQL database and `docs/00-context/engineering/schema.dbml`. Configurations pin exactly `migration_head`, `dbml_sha256` and `schema_fingerprint_sha256` inside `database_baseline`; no separate status or manifest. See [database policy](docs/00-context/engineering/DATABASE-SCHEMA.md). Researcher setup builds a complete initial schema with TypeORM migrations and adds migrations between runs only when needed. Each run locks its schema/history/DBML; AI maps existing tables and may perform authorized business DML only. Prompt/Source preflight checks migration history and both hashes before START. Subsequent UCs retain data; changed baselines require new configuration/run identities. Docker setup applies migrations; application rebuilds within a run use `--no-deps backend frontend`.
+The fifth input is the researcher-prepared MySQL database and `docs/00-context/engineering/schema.dbml`. Configurations pin exactly `migration_head`, `dbml_sha256` and `schema_fingerprint_sha256` inside `database_baseline`; no separate status or manifest. See [database policy](docs/00-context/engineering/DATABASE-SCHEMA.md). Researcher setup begins with an empty application schema and a no-op baseline migration, then adds reviewed migrations between runs when structure is required. Each run locks its schema/history/DBML; AI maps existing tables and may perform authorized business DML only. Prompt/Source preflight checks migration history and both hashes before START. Subsequent UCs retain data; changed baselines require new configuration/run identities. Docker setup applies migrations; application rebuilds within a run use `--no-deps backend frontend`.
 
 ## System baseline
 
 - Frontend: React 18, TypeScript, Vite, Tailwind, React Router, Axios, Context/Zustand, Recharts.
 - Backend: NestJS 11, TypeScript, TypeORM/MySQL, class-validator, Passport JWT, bcrypt and Swagger.
 - Runtime: Docker Compose v2 with frontend, backend and MySQL.
+- Source architecture: three layers in both applications (`presentation -> business -> data`).
 - API prefix: `/api`.
 - Success envelope: `{ success: true, message, data }`.
 - Error envelope: `{ success: false, statusCode, message, timestamp, path }`.

@@ -1,0 +1,20 @@
+{
+  "artifact_type": "docker-deployment-operation",
+  "observed_at": "2026-09-27T13:21:37Z",
+  "mode": "initialize",
+  "repository_revision": "56051d6",
+  "source_tree_sha256": {
+    "backend": "bbade41700d85a1acc21c5c4816773a5b7e4a4354cf252ae74cfb9a89ff8113c",
+    "frontend": "8e7e06e6ce19c59d23a55af45011ce2066711b2cca99c6f2d203278b1c541e9e"
+  },
+  "commands": [
+    {"id": "docker_info", "exit_code": 0},
+    {"id": "compose_config_with_committed_example", "exit_code": 0},
+    {"id": "compose_build_backend_frontend", "exit_code": 0},
+    {"id": "restore_source_baseline_check", "exit_code": 0},
+    {"id": "docker_desktop_stop_after_verification", "exit_code": 0}
+  ],
+  "outcome": "BLOCKED",
+  "error_excerpt": "finalsource/.env contains the committed placeholder; no 100ms-ui-kit container or volume was created.",
+  "next_action": "Provide a non-placeholder MYSQL_PASSWORD in ignored finalsource/.env before runtime initialization."
+}

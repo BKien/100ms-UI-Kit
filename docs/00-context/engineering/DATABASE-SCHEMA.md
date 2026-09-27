@@ -1,6 +1,6 @@
 # Researcher-managed database baseline
 
-The database is the fifth prepared input alongside the four research JSON inputs. Keep NestJS, TypeORM and MySQL 8.4. Design the initial schema as completely as possible from known requirements. TypeORM migrations create application tables and retain the history of necessary changes; do not create an empty migration for every UC. The researcher may evolve the schema between runs. From a run's first START through finalization its database baseline is immutable. Retain accumulated application data between cumulative UCs.
+The database is the fifth prepared input alongside the four research JSON inputs. Keep NestJS, TypeORM and MySQL 8.4. The repository starts from one reviewed no-op migration and no application tables. Add reviewed TypeORM migrations before the first run that requires new structure, and retain their history; do not create an empty migration for every UC. The researcher may evolve the schema between runs. From a run's first START through finalization its database baseline is immutable. Retain accumulated application data between cumulative UCs.
 
 ## Configuration contract
 
@@ -20,8 +20,8 @@ The DBML hash covers exact bytes, including line endings. The runtime fingerprin
 
 ## Schema files and history
 
-- `finalsource/be/src/database/migrations/<13-digit-timestamp>-<Name>.ts`: one exported `Name<timestamp>` class implementing `MigrationInterface`, with `up` and `down`. Keep timestamps unique and increasing. Do not override the instance name with a different value.
-- `finalsource/be/src/database/migration-data-source.ts`: setup-only CLI connection; migrations use the `typeorm_migrations` table.
+- `finalsource/be/src/data/database/migrations/<13-digit-timestamp>-<Name>.ts`: one exported `Name<timestamp>` class implementing `MigrationInterface`, with `up` and `down`. Keep timestamps unique and increasing. Do not override the instance name with a different value.
+- `finalsource/be/src/data/database/migration-data-source.ts`: setup-only CLI connection; migrations use the `typeorm_migrations` table.
 - TypeORM entities: backend mappings to existing tables. Correcting a mapping does not authorize changing the database.
 - `docs/00-context/engineering/schema.dbml`: researcher-maintained, consolidated application schema at the selected migration head. Document keys, defaults, lengths, nullability and FK actions accurately.
 
@@ -53,7 +53,7 @@ Available npm commands are `migration:create`, `migration:generate`, `migration:
 To save a newly created migration on the host, run from `finalsource/` with a writable source-directory mount (researcher setup only):
 
 ```text
-docker compose run --rm --no-deps -v ./be/src/database/migrations:/app/src/database/migrations migration npm run migration:create -- src/database/migrations/UC02Change
+docker compose run --rm --no-deps -v ./be/src/data/database/migrations:/app/src/data/database/migrations migration npm run migration:create -- src/data/database/migrations/UC02Change
 ```
 
 Replace the example name with the actual change. To generate from reviewed entity changes, first rebuild the migration image, then use the same mount and `migration:generate` command with the same output-path argument against the prepared running database. Review the generated SQL before execution. Changes written only inside a disposable container would otherwise be lost.

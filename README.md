@@ -64,7 +64,7 @@ docker compose --env-file finalsource/.env -f finalsource/compose.yaml up --buil
 docker compose --env-file finalsource/.env -f finalsource/compose.yaml ps
 ```
 
-The researcher must provide strong local values for `MYSQL_PASSWORD` and `JWT_SECRET`. Never commit `finalsource/.env`.
+The researcher must provide a strong local value for `MYSQL_PASSWORD`. Feature-specific secrets such as `JWT_SECRET` are added only when an approved use case requires them. Never commit `finalsource/.env`.
 
 ## Current verification boundary
 
